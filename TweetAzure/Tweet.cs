@@ -4,6 +4,11 @@ namespace DotNetRu.Clients.Portable.Model
 
     public class Tweet
     {
+        public Tweet(ulong statusID)
+        {
+            StatusID = statusID;
+        }
+
         private string tweetedImage;
 
         public bool HasImage => !string.IsNullOrWhiteSpace(this.tweetedImage);
@@ -19,6 +24,8 @@ namespace DotNetRu.Clients.Portable.Model
         public int NumberOfRetweets { get; set; }
 
         public int NumberOfComments { get; set; }
+
+        public ulong StatusID { get; }
 
         public string Text { get; set; }
 
@@ -61,5 +68,25 @@ namespace DotNetRu.Clients.Portable.Model
         }
 
         public bool HasAttachedImage => !string.IsNullOrWhiteSpace(this.TweetedImage);
+
+        public override string ToString()
+        {
+            return $"[Name={Name};Text={Text};Retweets={NumberOfRetweets};Likes={NumberOfLikes}";
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (!(obj is Tweet otherTweet))
+            {
+                return false;
+            }
+
+            return otherTweet.StatusID == StatusID;
+        }
+
+        public override int GetHashCode()
+        {
+            return (int) StatusID;
+        }
     }
 }
