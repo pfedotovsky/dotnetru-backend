@@ -51,11 +51,13 @@ namespace DotNetRu.Clients.Portable.Services
                                                                && tweet.TweetMode == TweetMode.Extended
                            select tweet).ToListAsync();
 
-                var tweetsWithoutDuplicates = new HashSet<Tweet>(spbDotNetTweets.Union(dotnetruTweets).Where(tweet => !tweet.PossiblySensitive).Select(GetTweet));
+                var unitedTweets = spbDotNetTweets.Union(dotnetruTweets).Where(tweet => !tweet.PossiblySensitive).Select(GetTweet);
 
-                var tweets = tweetsWithoutDuplicates.OrderByDescending(x => x.CreatedDate).ToList();
+                var tweetsWithoutDuplicates = unitedTweets.GroupBy(tw => tw.StatusID).Select(g => g.First());
 
-                return tweets;
+                var sortedTweets = tweetsWithoutDuplicates.OrderByDescending(x => x.CreatedDate).ToList();
+
+                return sortedTweets;
             }
             catch (Exception e)
             {

@@ -72,21 +72,6 @@ namespace DotNetRu.Clients.Portable.Model
         public override string ToString()
         {
             return $"[Name={Name};Text={Text};Retweets={NumberOfRetweets};Likes={NumberOfLikes}";
-        }
-
-        public override bool Equals(object obj)
-        {
-            if (!(obj is Tweet otherTweet))
-            {
-                return false;
-            }
-
-            return otherTweet.StatusID == StatusID;
-        }
-
-        public override int GetHashCode()
-        {
-            return (int) StatusID;
-        }
+        }        
     }
 }
