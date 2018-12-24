@@ -9,7 +9,7 @@ using System.Text;
 
 namespace PushNotifications
 {
-    public static class GitHubWebHook
+    public static class PushFunction
     {
         [FunctionName("GitHubWebHook")]
         public static async Task<IActionResult> Run(
