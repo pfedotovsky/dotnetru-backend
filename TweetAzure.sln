@@ -1,13 +1,15 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.28307.136
+VisualStudioVersion = 15.0.28307.168
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TweetAzure", "TweetAzure\TweetAzure.csproj", "{7D07FB3E-5595-4129-93E8-F2B1FD6E976A}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TweetClient", "TweetClient\TweetClient.csproj", "{0716CBBE-AE27-4712-BDB3-1E1A0A7B2807}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TweetAzure.Tests", "TweetAzure.Tests\TweetAzure.Tests.csproj", "{A9C7A32D-7E41-40F9-B311-E10A0156B65E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PushNotifications", "PushNotifications\PushNotifications.csproj", "{F17C0D51-DBF3-432D-B537-A375177530DA}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TweetAzure.Tests", "TweetAzure.Tests\TweetAzure.Tests.csproj", "{A9C7A32D-7E41-40F9-B311-E10A0156B65E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,6 +25,10 @@ Global
 		{0716CBBE-AE27-4712-BDB3-1E1A0A7B2807}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0716CBBE-AE27-4712-BDB3-1E1A0A7B2807}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0716CBBE-AE27-4712-BDB3-1E1A0A7B2807}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F17C0D51-DBF3-432D-B537-A375177530DA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F17C0D51-DBF3-432D-B537-A375177530DA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F17C0D51-DBF3-432D-B537-A375177530DA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F17C0D51-DBF3-432D-B537-A375177530DA}.Release|Any CPU.Build.0 = Release|Any CPU
 		{A9C7A32D-7E41-40F9-B311-E10A0156B65E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{A9C7A32D-7E41-40F9-B311-E10A0156B65E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A9C7A32D-7E41-40F9-B311-E10A0156B65E}.Release|Any CPU.ActiveCfg = Release|Any CPU
