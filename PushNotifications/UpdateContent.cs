@@ -13,5 +13,7 @@ namespace PushNotifications
         public VenueEntity[] Venues { get; set; }
 
         public FriendEntity[] Friends { get; set; }
+
+        public string[] Photos { get; set; }
     }
 }

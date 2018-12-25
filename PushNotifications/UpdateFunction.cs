@@ -36,7 +36,9 @@ namespace PushNotifications
 
             var httpClient = new HttpClient();
 
-            var streamTasks = contentUpdate.Files.Select(
+            var xmlFiles = contentUpdate.Files.Where(x => x.Filename.EndsWith(".xml"));
+
+            var streamTasks = xmlFiles.Select(
                 async file => new
                 {
                     file.Filename,
@@ -44,13 +46,11 @@ namespace PushNotifications
                 });
             var fileContents = await Task.WhenAll(streamTasks);
 
-            var xmlFiles = fileContents.Where(x => x.Filename.EndsWith(".xml")).ToList();
-
-            var meetups = xmlFiles.Where(x => x.Filename.Contains("meetups")).Select(x => x.Content.Deserialize<MeetupEntity>());
-            var talks = xmlFiles.Where(x => x.Filename.Contains("talks")).Select(x => x.Content.Deserialize<TalkEntity>());
-            var speakers = xmlFiles.Where(x => x.Filename.Contains("speakers")).Select(x => x.Content.Deserialize<SpeakerEntity>());
-            var friends = xmlFiles.Where(x => x.Filename.Contains("friends")).Select(x => x.Content.Deserialize<FriendEntity>());
-            var venues = xmlFiles.Where(x => x.Filename.Contains("venues")).Select(x => x.Content.Deserialize<VenueEntity>());
+            var meetups = fileContents.Where(x => x.Filename.Contains("meetups")).Select(x => x.Content.Deserialize<MeetupEntity>());
+            var talks = fileContents.Where(x => x.Filename.Contains("talks")).Select(x => x.Content.Deserialize<TalkEntity>());
+            var speakers = fileContents.Where(x => x.Filename.Contains("speakers")).Select(x => x.Content.Deserialize<SpeakerEntity>());
+            var friends = fileContents.Where(x => x.Filename.Contains("friends")).Select(x => x.Content.Deserialize<FriendEntity>());
+            var venues = fileContents.Where(x => x.Filename.Contains("venues")).Select(x => x.Content.Deserialize<VenueEntity>());
 
             var updateContent = new UpdateContent
             {
@@ -58,10 +58,10 @@ namespace PushNotifications
                 Talks = talks.ToArray(),
                 Speakers = speakers.ToArray(),
                 Friends = friends.ToArray(),
-                Venues = venues.ToArray()
+                Venues = venues.ToArray(),
+                Photos = contentUpdate.Files.Where(x => x.Filename.EndsWith(".jpg")).Select(x => x.RawUrl).ToArray()
             };
 
-            // TODO speaker photos - just an array to cache?
             return new JsonResult(updateContent);
         }
     }
