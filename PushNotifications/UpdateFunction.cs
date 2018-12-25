@@ -54,6 +54,7 @@ namespace PushNotifications
 
             var updateContent = new UpdateContent
             {
+                LatestVersion = latestMasterCommitSha,
                 Meetups = meetups.ToArray(),
                 Talks = talks.ToArray(),
                 Speakers = speakers.ToArray(),

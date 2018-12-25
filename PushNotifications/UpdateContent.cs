@@ -4,6 +4,8 @@ namespace PushNotifications
 {
     public class UpdateContent
     {
+        public string LatestVersion { get; set; }
+
         public MeetupEntity[] Meetups { get; set; }
 
         public TalkEntity[] Talks { get; set; }
