@@ -1,17 +1,25 @@
-﻿namespace DotNetRu.Clients.Portable.Services
+﻿using NLog;
+
+namespace DotNetRu.Clients.Portable.Services
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
 
-    using DotNetRu.Clients.Portable.Model;
+    using Model;
 
     using LinqToTwitter;
     using TweetAzure;
 
     public class TweetService
     {
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
+        /// <summary>
+        /// Returns tweets by SpdDotNet/DotNetRu (if it's retweet then original tweet is returned instead of retweet)
+        /// </summary>
+        /// <returns></returns>
         public static async Task<List<Tweet>> Get()
         {
             try
@@ -43,14 +51,17 @@
                                                                && tweet.TweetMode == TweetMode.Extended
                            select tweet).ToListAsync();
 
-                var tweets = spbDotNetTweets.Union(dotnetruTweets).Where(tweet => !tweet.PossiblySensitive)
-                    .Select(GetTweet).OrderByDescending(x => x.CreatedDate).ToList();
+                var unitedTweets = spbDotNetTweets.Union(dotnetruTweets).Where(tweet => !tweet.PossiblySensitive).Select(GetTweet);
 
-                return tweets;
+                var tweetsWithoutDuplicates = unitedTweets.GroupBy(tw => tw.StatusID).Select(g => g.First());
+
+                var sortedTweets = tweetsWithoutDuplicates.OrderByDescending(x => x.CreatedDate).ToList();
+
+                return sortedTweets;
             }
             catch (Exception e)
             {
-                // ignored
+                Logger.Error(e);
             }
 
             return new List<Tweet>();
@@ -63,8 +74,8 @@
             var urlLinks =
                 sourceTweet.Entities.UrlEntities.Select(t => new KeyValuePair<string, string>(t.Url, t.DisplayUrl)).ToList();
 
-            return new Tweet
-            {
+            return new Tweet(sourceTweet.StatusID)
+            {                
                 TweetedImage =
                                tweet.Entities?.MediaEntities.Count > 0
                                    ? tweet.Entities?.MediaEntities?[0].MediaUrlHttps ?? string.Empty

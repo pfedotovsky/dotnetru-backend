@@ -6,6 +6,8 @@
   <ItemGroup>
     <PackageReference Include="linqtotwitter" Version="5.0.0" />
     <PackageReference Include="Microsoft.NET.Sdk.Functions" Version="1.0.24" />
+    <PackageReference Include="NLog" Version="4.5.11" />
+    <PackageReference Include="NLog.Config" Version="4.5.11" />
   </ItemGroup>
   <ItemGroup>
     <None Update="host.json">
