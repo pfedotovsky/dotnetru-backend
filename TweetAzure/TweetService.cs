@@ -1,4 +1,5 @@
 ﻿using NLog;
+using System.Text.RegularExpressions;
 
 namespace DotNetRu.Clients.Portable.Services
 {
@@ -74,6 +75,13 @@ namespace DotNetRu.Clients.Portable.Services
             var urlLinks =
                 sourceTweet.Entities.UrlEntities.Select(t => new KeyValuePair<string, string>(t.Url, t.DisplayUrl)).ToList();
 
+            var profileImage = sourceTweet.User?.ProfileImageUrl.Replace("http://", "https://");
+            if (profileImage != null)
+            {
+                //normal image is 48x48, bigger image is 73x73, see https://developer.twitter.com/en/docs/accounts-and-users/user-profile-images-and-banners
+                profileImage = Regex.Replace(profileImage, @"(.+)_normal(\..+)", "$1_bigger$2");
+            }
+
             return new Tweet(sourceTweet.StatusID)
             {                
                 TweetedImage =
@@ -87,7 +95,7 @@ namespace DotNetRu.Clients.Portable.Services
                 Name = sourceTweet.User?.Name,
                 CreatedDate = tweet.CreatedAt,
                 Url = $"https://twitter.com/{sourceTweet.User?.ScreenNameResponse}/status/{tweet.StatusID}",
-                Image = sourceTweet.User?.ProfileImageUrl.Replace("http://", "https://")
+                Image = profileImage
             };
         }
     }
