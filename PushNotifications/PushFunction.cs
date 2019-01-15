@@ -11,27 +11,29 @@ namespace PushNotifications
 {
     public static class PushFunction
     {
-        [FunctionName("GitHubWebHook")]
+        [FunctionName("Push")]
         public static async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)] HttpRequest req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "{channelName}")]
+            HttpRequest req,
+            string channelName,
             ILogger log)
         {
-            log.LogInformation("C# HTTP trigger function processed a request.");
+            log.LogInformation("Triggered Push Notification");
 
-            string androidResult = await SendPushForAndroid();
+            string androidResult = await SendPushForAndroid(channelName);
 
             return new OkObjectResult($"Push Notification for Android sent: " + androidResult);
         }
 
-        private static async Task<string> SendPushForAndroid()
+        private static async Task<string> SendPushForAndroid(string channelName)
         {
             var contentString =
-@"{
-  'to': '/topics/NewMeetupTest',
-    'data': {
+$@"{{
+  'to': '/topics/{channelName}',
+    'data': {{
        'my_custom_key': 'my_custom_value'
-     }
-}";
+     }}
+}}";
             var content = new StringContent(contentString.Replace("'", "\""), Encoding.UTF8, "application/json");
 
             HttpClient httpClient = new HttpClient();
